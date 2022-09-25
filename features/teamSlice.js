@@ -28,6 +28,7 @@ export const teamSlice = createSlice({
         },
         createTeam: (state, action) => {
             state.teams = [action.payload, ...state.teams]
+            state.allTeamNames = [action.payload.name, ...state.allTeamNames]
         },
         deleteTeam: (state, action) => {
             state.teams = state.teams.filter(
