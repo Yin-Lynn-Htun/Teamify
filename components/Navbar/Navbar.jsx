@@ -36,11 +36,11 @@ const NavBar = () => {
                                 />
                             </a>
                         </Link> */}
-                    <h1 className="hidden lg:block ml-5 font-bold text-3xl">
+                    <h1 className=" block ml-5 font-bold text-3xl">
                         {isLogin && user ? user.username : 'Teamify'}
                     </h1>
                 </div>
-                <div className="hidden  font-semibold text-xl lg:flex gap-7 items-center ml-auto">
+                <div className=" font-semibold text-xl  flex gap-7 items-center ml-auto">
                     <Link href={'/'} passHref>
                         <a className="hover:text-text-pink">Players</a>
                     </Link>

@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/Navbar/Navbar'
 import PlayerList from '../components/Players/PlayerList'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllTeams } from '../features/teamSlice'
-import { setPlayers } from '../features/playerSlice'
+import {
+    setPage,
+    setPlayers,
+    setStopPlayerHasMore,
+} from '../features/playerSlice'
 
 export async function getStaticProps() {
     const res = await fetch(
@@ -24,8 +27,7 @@ export async function getStaticProps() {
 }
 
 const Home = ({ players: playerData }) => {
-    const { players, page } = useSelector((store) => store.player)
-    const [isHasMore, setIsHasMore] = useState(true)
+    const { players, page, isHasMore } = useSelector((store) => store.player)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -39,13 +41,13 @@ const Home = ({ players: playerData }) => {
             `https://www.balldontlie.io/api/v1/players?per_page=10&&page=${page}`
         )
 
-        dispatch(setPage(page + 1))
-
         if (res.ok) {
             const data = await res.json()
-            setPlayers([...players, ...data.data])
+            dispatch(setPlayers([...players, ...data.data]))
             if (!data.meta.next_page) {
-                setIsHasMore(false)
+                dispatch(setStopPlayerHasMore())
+            } else {
+                dispatch(setPage(players.length / 10 + 1))
             }
         }
     }

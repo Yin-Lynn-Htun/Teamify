@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import uuid from 'react-uuid'
 
 const CreateTeamModal = (props) => {
-    const teamNames = useSelector((store) => store.team.allTeamNames)
+    const allTeams = useSelector((store) => store.team.allTeams)
+    const teamNames = allTeams.map((team) => team.name)
 
     const [name, setName] = useState('')
     const [fullName, setFullName] = useState('')
@@ -34,12 +35,12 @@ const CreateTeamModal = (props) => {
     }
 
     useEffect(() => {
-        if (!teamNames.length) {
+        if (!allTeams.length) {
             dispatch(fetchAllTeams())
         }
     })
 
-    if (!teamNames.length) return <p>Loading...</p>
+    if (!allTeams.length) return <p>Loading...</p>
 
     const isNameUnique = !teamNames.includes(name)
     const isFormValid =

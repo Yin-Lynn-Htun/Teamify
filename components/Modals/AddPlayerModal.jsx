@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addTeam } from '../../features/playerSlice'
 
 const AddPlayerModal = (props) => {
-    const { allTeams, allTeamNames } = useSelector((store) => store.team)
+    const { allTeams } = useSelector((store) => store.team)
     const [selectedTeam, setSelectedTeam] = useState(null)
 
     const dispatch = useDispatch()
@@ -19,12 +19,12 @@ const AddPlayerModal = (props) => {
     }
 
     useEffect(() => {
-        if (!allTeamNames.length) {
+        if (!allTeams.length) {
             dispatch(fetchAllTeams())
         }
-    }, [allTeamNames, dispatch])
+    }, [allTeams, dispatch])
 
-    if (!allTeamNames.length) return <p>Teams are loading...</p>
+    if (!allTeams.length) return <p>Teams are loading...</p>
 
     return (
         <Portal>
@@ -55,10 +55,13 @@ const AddPlayerModal = (props) => {
                                         }
                                     >
                                         <option value="">Select a team</option>
-                                        {allTeamNames.map((team, idx) => {
+                                        {allTeams.map((team) => {
                                             return (
-                                                <option key={idx} value={team}>
-                                                    {team}
+                                                <option
+                                                    key={team.id}
+                                                    value={team.id}
+                                                >
+                                                    {team.name}
                                                 </option>
                                             )
                                         })}

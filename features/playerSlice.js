@@ -3,12 +3,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 const initialState = {
     players: [],
     page: 2,
+    isHasMore: true,
 }
 
 export const playerSlice = createSlice({
     name: 'team',
     initialState,
     reducers: {
+        setStopPlayerHasMore: (state) => {
+            state.isHasMore = false
+        },
         setPage: (state, action) => {
             state.page = action.payload
         },
@@ -34,7 +38,12 @@ export const playerSlice = createSlice({
     },
 })
 
-export const { setPlayers, addTeam, setPage, removePlayerFromDeleteTeam } =
-    playerSlice.actions
+export const {
+    setPlayers,
+    addTeam,
+    setPage,
+    removePlayerFromDeleteTeam,
+    setStopPlayerHasMore,
+} = playerSlice.actions
 
 export default playerSlice.reducer

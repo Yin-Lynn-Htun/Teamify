@@ -3,12 +3,7 @@ import NavBar from '../components/Navbar/Navbar'
 import TeamList from '../components/Teams/TeamList'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    fetchAllTeams,
-    setStopHasMore,
-    setTeamPage,
-    setTeams,
-} from '../features/teamSlice'
+import { setStopHasMore, setTeamPage, setTeams } from '../features/teamSlice'
 
 export async function getStaticProps() {
     const res = await fetch(
@@ -38,12 +33,9 @@ const Team = ({ teams: teamsData }) => {
     }, [dispatch, teams, teamsData])
 
     const fetchMoreData = async () => {
-        console.log('first')
         const res = await fetch(
             `https://www.balldontlie.io/api/v1/teams?per_page=10&&page=${page}`
         )
-
-        dispatch(setTeamPage(page + 1))
 
         if (res.ok) {
             const data = await res.json()
@@ -51,6 +43,8 @@ const Team = ({ teams: teamsData }) => {
             dispatch(setTeams([...teams, ...data.data]))
             if (!data.meta.next_page) {
                 dispatch(setStopHasMore())
+            } else {
+                dispatch(setTeamPage(teams.length / 10 + 1))
             }
         }
     }
