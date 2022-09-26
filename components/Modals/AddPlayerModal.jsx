@@ -13,7 +13,7 @@ const AddPlayerModal = (props) => {
     const dispatch = useDispatch()
 
     const handleChooseTeam = () => {
-        const item = allTeams.find((team) => team.name === selectedTeam)
+        const item = allTeams.find((team) => team.id == selectedTeam)
         dispatch(addTeam({ id: props.id, team: item }))
         props.closeModal()
     }
@@ -24,7 +24,18 @@ const AddPlayerModal = (props) => {
         }
     }, [allTeams, dispatch])
 
-    if (!allTeams.length) return <p>Teams are loading...</p>
+    if (!allTeams.length)
+        return (
+            <Portal>
+                <div className="w-screen h-screen bg-[#030812ef]  fixed top-0 left-0 z-50 overflow-hidden">
+                    <div className="bg-[#93082b] text-white fixed w-[600px]  center_fixed_component shadow-2xl rounded-lg px-14 py-7">
+                        <h1 className="text-xl font-semibold text-center">
+                            Teams are loading.
+                        </h1>
+                    </div>
+                </div>
+            </Portal>
+        )
 
     return (
         <Portal>

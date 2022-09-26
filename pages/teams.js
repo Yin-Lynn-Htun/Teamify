@@ -27,7 +27,7 @@ const Team = ({ teams: teamsData }) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!teams.length) {
+        if (teams.length < 10) {
             dispatch(setTeams(teamsData))
         }
     }, [dispatch, teams, teamsData])
