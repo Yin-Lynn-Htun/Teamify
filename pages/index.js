@@ -4,6 +4,7 @@ import TeamList from '../components/Teams/TeamList'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { setStopHasMore, setTeamPage, setTeams } from '../features/teamSlice'
+import Head from 'next/head'
 
 export async function getStaticProps() {
     const res = await fetch(
@@ -57,6 +58,9 @@ const Team = ({ teams: teamsData }) => {
 
     return (
         <div>
+            <Head>
+                <title>Teamify - Teams</title>
+            </Head>
             <NavBar />
             <h1 className="text-blue-300 text-center text-4xl font-bold my-10 ">
                 Team List

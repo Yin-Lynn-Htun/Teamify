@@ -8,6 +8,7 @@ import {
     setPlayers,
     setStopPlayerHasMore,
 } from '../features/playerSlice'
+import Head from 'next/head'
 
 export async function getStaticProps() {
     const res = await fetch(
@@ -56,6 +57,9 @@ const Home = ({ players: playerData }) => {
 
     return (
         <div>
+            <Head>
+                <title>Teamify - Players</title>
+            </Head>
             <NavBar />
             <h1 className="text-yellow-300 text-center text-4xl font-bold my-10 ">
                 Player List
