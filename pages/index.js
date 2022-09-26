@@ -33,6 +33,9 @@ const Team = ({ teams: teamsData }) => {
     }, [dispatch, teams, teamsData])
 
     const fetchMoreData = async () => {
+        if (teams.length >= 25) {
+            return
+        }
         const res = await fetch(
             `https://www.balldontlie.io/api/v1/teams?per_page=10&&page=${page}`
         )
@@ -55,6 +58,9 @@ const Team = ({ teams: teamsData }) => {
     return (
         <div>
             <NavBar />
+            <h1 className="text-blue-300 text-center text-4xl font-bold my-10 ">
+                Team List
+            </h1>
             <InfiniteScroll
                 dataLength={teams.length}
                 next={fetchMoreData}

@@ -42,10 +42,10 @@ const NavBar = () => {
                 </div>
                 <div className=" font-semibold text-xl  flex gap-7 items-center ml-auto">
                     <Link href={'/'} passHref>
-                        <a className="hover:text-text-pink">Players</a>
-                    </Link>
-                    <Link href={'/teams'} passHref>
                         <a className="hover:text-text-pink">Teams</a>
+                    </Link>
+                    <Link href={'/players'} passHref>
+                        <a className="hover:text-text-pink">Players</a>
                     </Link>
                     <PrimaryButton onClick={() => setShowCreateTeamModal(true)}>
                         Create Team

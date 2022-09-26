@@ -57,6 +57,9 @@ const Home = ({ players: playerData }) => {
     return (
         <div>
             <NavBar />
+            <h1 className="text-yellow-300 text-center text-4xl font-bold my-10 ">
+                Player List
+            </h1>
             <InfiniteScroll
                 dataLength={players.length}
                 next={fetchMoreData}
