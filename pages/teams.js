@@ -43,7 +43,7 @@ const Team = ({ teams: teamsData }) => {
             if (!data.meta.next_page) {
                 dispatch(setStopHasMore())
             } else {
-                dispatch(setTeamPage(teams.length / 10 + 1))
+                dispatch(setTeamPage(page + 1))
             }
         }
     }

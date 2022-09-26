@@ -36,15 +36,6 @@ const Home = ({ players: playerData }) => {
         }
     }, [dispatch, playerData, players])
 
-    useEffect(() => {
-        console.log('ented')
-        if (firstTime) {
-            const value = players.length / 10 + 1
-            dispatch(setPage(Math.floor(value)))
-        }
-        firstTime = false
-    }, [dispatch, players])
-
     const fetchMoreData = async () => {
         const res = await fetch(
             `https://www.balldontlie.io/api/v1/players?per_page=10&&page=${page}`
