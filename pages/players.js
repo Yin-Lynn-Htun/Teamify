@@ -1,70 +1,72 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/Navbar/Navbar'
-import TeamList from '../components/Teams/TeamList'
+import PlayerList from '../components/Players/PlayerList'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
-import { setStopHasMore, setTeamPage, setTeams } from '../features/teamSlice'
+import {
+    setPage,
+    setPlayers,
+    setStopPlayerHasMore,
+} from '../features/playerSlice'
 
 export async function getStaticProps() {
     const res = await fetch(
-        'https://www.balldontlie.io/api/v1/teams?per_page=10&&page=1'
+        'https://www.balldontlie.io/api/v1/players?per_page=10&&page=1'
     )
     if (res.ok) {
         const data = await res.json()
 
         return {
             props: {
-                teams: data.data,
+                players: data.data,
                 meta: data.meta,
             },
         }
     }
     return []
 }
+const firstTime = true
 
-const Team = ({ teams: teamsData }) => {
-    const { teams, page, isHasMore } = useSelector((store) => store.team)
+const Home = ({ players: playerData }) => {
+    const { players, page, isHasMore } = useSelector((store) => store.player)
     const dispatch = useDispatch()
-
     useEffect(() => {
-        if (teams.length < 10) {
-            dispatch(setTeams(teamsData))
+        if (!players.length) {
+            dispatch(setPlayers(playerData))
         }
-    }, [dispatch, teams, teamsData])
+    }, [dispatch, playerData, players])
 
     const fetchMoreData = async () => {
         const res = await fetch(
-            `https://www.balldontlie.io/api/v1/teams?per_page=10&&page=${page}`
+            `https://www.balldontlie.io/api/v1/players?per_page=10&&page=${page}`
         )
 
         if (res.ok) {
             const data = await res.json()
-            dispatch(setTeams([...teams, ...data.data]))
+            dispatch(setPlayers([...players, ...data.data]))
             if (!data.meta.next_page) {
-                dispatch(setStopHasMore())
+                dispatch(setStopPlayerHasMore())
             } else {
-                dispatch(setTeamPage(page + 1))
+                dispatch(setPage(page + 1))
             }
         }
     }
 
-    if (!teams.length) {
-        return <p>Loading...</p>
-    }
+    if (!players.length) return <p>Loading...</p>
 
     return (
         <div>
             <NavBar />
             <InfiniteScroll
-                dataLength={teams.length}
+                dataLength={players.length}
                 next={fetchMoreData}
                 hasMore={isHasMore}
                 loader={<h4>Loading...</h4>}
             >
-                <TeamList teams={teams} />
+                <PlayerList players={players} />
             </InfiniteScroll>
         </div>
     )
 }
 
-export default Team
+export default Home
