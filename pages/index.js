@@ -25,16 +25,25 @@ export async function getStaticProps() {
     }
     return []
 }
+const firstTime = true
 
 const Home = ({ players: playerData }) => {
     const { players, page, isHasMore } = useSelector((store) => store.player)
     const dispatch = useDispatch()
-
     useEffect(() => {
         if (!players.length) {
             dispatch(setPlayers(playerData))
         }
     }, [dispatch, playerData, players])
+
+    useEffect(() => {
+        console.log('ented')
+        if (firstTime) {
+            const value = players.length / 10 + 1
+            dispatch(setPage(Math.floor(value)))
+        }
+        firstTime = false
+    }, [dispatch, players])
 
     const fetchMoreData = async () => {
         const res = await fetch(
@@ -47,7 +56,7 @@ const Home = ({ players: playerData }) => {
             if (!data.meta.next_page) {
                 dispatch(setStopPlayerHasMore())
             } else {
-                dispatch(setPage(players.length / 10 + 1))
+                dispatch(setPage(page + 1))
             }
         }
     }

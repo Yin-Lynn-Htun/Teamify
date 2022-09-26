@@ -39,7 +39,6 @@ const Team = ({ teams: teamsData }) => {
 
         if (res.ok) {
             const data = await res.json()
-            // console.log(data)
             dispatch(setTeams([...teams, ...data.data]))
             if (!data.meta.next_page) {
                 dispatch(setStopHasMore())
