@@ -4,6 +4,7 @@ import { AiFillEdit } from 'react-icons/ai'
 import { deleteTeam, updateTeam } from '../../features/teamSlice'
 import { useDispatch } from 'react-redux'
 import UpdateTeamModal from '../Modals/UpdateTeamsModal'
+import { removePlayerFromDeleteTeam } from '../../features/playerSlice'
 
 const TeamItem = (props) => {
     const [showModal, setShowModal] = useState(false)
@@ -11,6 +12,7 @@ const TeamItem = (props) => {
 
     const handleDeleteTeam = (id) => {
         dispatch(deleteTeam(id))
+        dispatch(removePlayerFromDeleteTeam(id))
     }
 
     return (

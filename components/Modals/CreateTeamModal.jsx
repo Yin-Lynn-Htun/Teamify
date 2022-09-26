@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Portal from '../Portal'
 import SecondaryButton from '../Buttons/SecondaryButton'
 import PrimaryButton from '../Buttons/PrimaryButton'
-import { createTeam } from '../../features/teamSlice'
+import { createTeam, fetchAllTeams } from '../../features/teamSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import uuid from 'react-uuid'
 
@@ -32,6 +32,14 @@ const CreateTeamModal = (props) => {
         )
         props.closeModal()
     }
+
+    useEffect(() => {
+        if (!teamNames.length) {
+            dispatch(fetchAllTeams())
+        }
+    })
+
+    if (!teamNames.length) return <p>Loading...</p>
 
     const isNameUnique = !teamNames.includes(name)
     const isFormValid =

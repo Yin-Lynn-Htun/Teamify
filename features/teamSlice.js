@@ -4,6 +4,8 @@ const initialState = {
     teams: [],
     allTeams: [],
     allTeamNames: [],
+    page: 2,
+    isHasMore: true,
 }
 
 export const fetchAllTeams = createAsyncThunk(
@@ -12,7 +14,6 @@ export const fetchAllTeams = createAsyncThunk(
         const response = await fetch('https://www.balldontlie.io/api/v1/teams')
         if (response.ok) {
             const data = await response.json()
-            console.log(data.data)
             return data.data
         }
         return []
@@ -23,11 +24,18 @@ export const teamSlice = createSlice({
     name: 'team',
     initialState,
     reducers: {
+        setStopHasMore: (state) => {
+            state.isHasMore = false
+        },
+        setTeamPage: (state, action) => {
+            state.page = action.payload
+        },
         setTeams: (state, action) => {
             state.teams = action.payload
         },
         createTeam: (state, action) => {
             state.teams = [action.payload, ...state.teams]
+            state.allTeams = [action.payload, ...state.allTeams]
             state.allTeamNames = [action.payload.name, ...state.allTeamNames]
         },
         deleteTeam: (state, action) => {
@@ -54,7 +62,13 @@ export const teamSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setTeams, createTeam, deleteTeam, updateTeam } =
-    teamSlice.actions
+export const {
+    setTeams,
+    createTeam,
+    deleteTeam,
+    updateTeam,
+    setTeamPage,
+    setStopHasMore,
+} = teamSlice.actions
 
 export default teamSlice.reducer
