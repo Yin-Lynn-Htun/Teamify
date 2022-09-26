@@ -14,7 +14,6 @@ import CreateTeamModal from '../Modals/CreateTeamModal'
 const NavBar = () => {
     const { isLogin, user } = useSelector((store) => store.auth)
     const [showLoginModal, setShowLoginModal] = useState(false)
-    const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
     const dispatch = useDispatch()
 
     const handleLogout = () => {
@@ -47,9 +46,7 @@ const NavBar = () => {
                     <Link href={'/players'} passHref>
                         <a className="hover:text-text-pink">Players</a>
                     </Link>
-                    <PrimaryButton onClick={() => setShowCreateTeamModal(true)}>
-                        Create Team
-                    </PrimaryButton>
+
                     {!isLogin ? (
                         <SecondaryButton
                             onClick={() => setShowLoginModal(true)}
@@ -69,11 +66,6 @@ const NavBar = () => {
             </div>
             {showLoginModal && (
                 <LoginModal closeModal={() => setShowLoginModal(false)} />
-            )}
-            {showCreateTeamModal && (
-                <CreateTeamModal
-                    closeModal={() => setShowCreateTeamModal(false)}
-                />
             )}
         </>
     )

@@ -5,6 +5,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { setStopHasMore, setTeamPage, setTeams } from '../features/teamSlice'
 import Head from 'next/head'
+import CreateTeamModal from '../components/Modals/CreateTeamModal'
+import PrimaryButton from '../components/Buttons/PrimaryButton'
 
 export async function getStaticProps() {
     const res = await fetch(
@@ -25,6 +27,7 @@ export async function getStaticProps() {
 
 const Team = ({ teams: teamsData }) => {
     const { teams, page, isHasMore } = useSelector((store) => store.team)
+    const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -57,23 +60,41 @@ const Team = ({ teams: teamsData }) => {
     }
 
     return (
-        <div>
-            <Head>
-                <title>Teamify - Teams</title>
-            </Head>
-            <NavBar />
-            <h1 className="text-blue-300 text-center text-4xl font-bold my-10 ">
-                Team List
-            </h1>
-            <InfiniteScroll
-                dataLength={teams.length}
-                next={fetchMoreData}
-                hasMore={isHasMore}
-                loader={<h4>Loading...</h4>}
-            >
-                <TeamList teams={teams} />
-            </InfiniteScroll>
-        </div>
+        <>
+            <div>
+                <Head>
+                    <title>Teamify - Teams</title>
+                </Head>
+                <NavBar />
+                <div className="relative">
+                    <h1 className="text-blue-300 text-center text-4xl font-bold my-10 ">
+                        Team List
+                    </h1>
+
+                    <div className="absolute top-0 right-10 text-center py-3">
+                        <PrimaryButton
+                            onClick={() => setShowCreateTeamModal(true)}
+                        >
+                            + Create Team
+                        </PrimaryButton>
+                    </div>
+                </div>
+
+                <InfiniteScroll
+                    dataLength={teams.length}
+                    next={fetchMoreData}
+                    hasMore={isHasMore}
+                    loader={<h4>Loading...</h4>}
+                >
+                    <TeamList teams={teams} />
+                </InfiniteScroll>
+            </div>
+            {showCreateTeamModal && (
+                <CreateTeamModal
+                    closeModal={() => setShowCreateTeamModal(false)}
+                />
+            )}
+        </>
     )
 }
 
